@@ -49,8 +49,8 @@ class _AnimatedButtonState extends State<AnimatedButton> with TickerProviderStat
               begin: Alignment.topCenter,
               end: Alignment.bottomCenter,
               colors: [
-                Color(0xFF81D4FA), // Light blue
-                Color(0xFF03A9F4), // Blue
+                Color(0xFF81D4FA),
+                Color(0xFF03A9F4),
               ],
             ),
             boxShadow: [

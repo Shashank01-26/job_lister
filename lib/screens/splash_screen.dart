@@ -45,15 +45,14 @@ class _SplashScreenState extends State<SplashScreen> with SingleTickerProviderSt
               ),
             ),
           ),
-          SizedBox(height: 20), // Add space between the image and text
+          SizedBox(height: 20), 
           Text(
             "Job Finder",
             style: TextStyle(
-              fontSize: 24, // Set font size to 24
-              fontWeight: FontWeight.bold, // Set font weight to bold
-              fontFamily: 'Roboto', // Change font family as needed
-              color: Colors.blue, // Set text color to blue
-              // Add more text styles as needed
+              fontSize: 24, 
+              fontWeight: FontWeight.bold, 
+              fontFamily: 'Roboto',
+              color: Colors.blue,
             ),
           ),
         ],

@@ -1,5 +1,7 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
-import 'package:job_lister/screens/profile_widget.dart';
+import 'package:job_lister/screens/job_details/job_details_widget.dart';
 import 'package:job_lister/screens/saved_job_widget.dart';
 
 class FinderPage extends StatefulWidget {
@@ -30,17 +32,7 @@ class _FinderPageState extends State<FinderPage> with TickerProviderStateMixin {
                     MaterialPageRoute(builder: (context) => SavedJobsScreen()),
                   );
                 },
-              ),
-              ListTile(
-                leading: Icon(Icons.person),
-                title: Text('Profile'),
-                onTap: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(builder: (context) => ProfileScreen()),
-                  );
-                },
-              ),
+              ),              
             ],
           ),
         );
@@ -63,9 +55,7 @@ class _FinderPageState extends State<FinderPage> with TickerProviderStateMixin {
 
   void _scrollListener() {
     if (_scrollController.offset >= _scrollController.position.maxScrollExtent &&
-        !_scrollController.position.outOfRange) {
-      // Scrolled to the bottom
-      // Perform any animation or action when reaching the bottom of the list
+        !_scrollController.position.outOfRange) {      
     }
   }
 
@@ -118,30 +108,92 @@ class _FinderPageState extends State<FinderPage> with TickerProviderStateMixin {
               ),
             ),
             Divider(thickness: 1.0),
+            SizedBox(
+              height: 200, // Set the height of the container
+              child: ListView.builder(
+                scrollDirection: Axis.horizontal,
+                itemCount: 10,
+                itemBuilder: (context, index) {
+                  return Padding(
+                    padding: EdgeInsets.symmetric(horizontal: 4.0),
+                    child: Container(
+                      width: 400,
+                      decoration: BoxDecoration(
+                        border: Border.all(color: Colors.grey),
+                        borderRadius: BorderRadius.circular(10.0),
+                      ),
+                      child: InkWell(
+                        onTap: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(builder: (context) => JobDetailsPage()),
+                          );
+                        },
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Padding(
+                              padding: EdgeInsets.all(8.0),
+                              child: Text(
+                                'Recommended Job $index',
+                                style: TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                            ),
+                            Padding(
+                              padding: EdgeInsets.symmetric(horizontal: 8.0),
+                              child: Text(
+                                'Description of the job',
+                              ),
+                            ),
+                            Padding(
+                              padding: EdgeInsets.all(8.0),
+                              child: Text(
+                                'Salary: \$${Random().nextInt(10000)}',
+                                style: TextStyle(
+                                  fontStyle: FontStyle.italic,
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+                  );
+                },
+              ),
+            ),
+            Divider(thickness: 1.0),
             Expanded(
               child: ListView.builder(
                 controller: _scrollController,
                 itemCount: 10,
                 itemBuilder: (context, index) {
-                  return _buildListItem(index);
+                  return Padding(
+                    padding: EdgeInsets.only(top: 8.0),
+                    child: InkWell(
+                      onTap: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(builder: (context) => JobDetailsPage()),
+                        );
+                      },
+                      child: _buildListItem(index),
+                    ),
+                  );
                 },
               ),
             ),
           ],
         ),
       ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () {
-          _showBottomSheet(context);
-        },
-        child: Icon(Icons.menu),
-      ),
     );
   }
 
   Widget _buildListItem(int index) {
     return Card(
-      elevation: 5,
+      elevation: 3,
       child: ListTile(
         leading: Icon(Icons.image),
         title: Column(

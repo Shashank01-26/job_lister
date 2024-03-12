@@ -19,7 +19,7 @@ class WelcomeScreen extends StatelessWidget {
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [                  
-                  SizedBox(height: 20), // Add spacing between the text and buttons
+                  SizedBox(height: 20),
                   Text(
                     "Welcome back,\nLet's start sorting your jobs out!!",
                     textAlign: TextAlign.center,
@@ -55,8 +55,7 @@ class WelcomeScreen extends StatelessWidget {
                   SizedBox(height: 40),
                   AnimatedButton(
                     text: 'Recruiter',
-                    onPressed: () {
-                      // Navigate to the recruiter page
+                    onPressed: () {                      
                       Navigator.push(
                         context,
                         MaterialPageRoute(builder: (context) => RecruiterPage()),
@@ -67,7 +66,6 @@ class WelcomeScreen extends StatelessWidget {
                   AnimatedButton(
                     text: 'Finder',
                     onPressed: () {
-                      // Navigate to the finder page
                       Navigator.push(
                         context,
                         MaterialPageRoute(builder: (context) => FinderPage()),
