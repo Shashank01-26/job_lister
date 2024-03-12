@@ -8,6 +8,14 @@ class JobDetailsPage extends StatefulWidget {
 }
 
 class _JobDetailsPageState extends State<JobDetailsPage> {
+  bool isJobSaved = false;
+
+  void saveJob() {
+    setState(() {
+      isJobSaved = !isJobSaved;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     double screenWidth = MediaQuery.of(context).size.width;
@@ -23,10 +31,11 @@ class _JobDetailsPageState extends State<JobDetailsPage> {
         ),
         actions: [
           IconButton(
-            icon: Icon(Icons.save),
-            onPressed: () {
-              // Implement save functionality
-            },
+            icon: Icon(
+              isJobSaved ? Icons.favorite : Icons.favorite_border,
+              color: isJobSaved ? Colors.red : null,
+            ),
+            onPressed: saveJob,
           ),
         ],
       ),
@@ -166,3 +175,5 @@ class _JobDetailsPageState extends State<JobDetailsPage> {
     );
   }
 }
+
+
