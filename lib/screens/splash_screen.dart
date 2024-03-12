@@ -32,11 +32,31 @@ class _SplashScreenState extends State<SplashScreen> with SingleTickerProviderSt
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Center(
-        child: FadeTransition(
-          opacity: _animation,
-          child: FlutterLogo(size: 200.0), // Your splash screen content
-        ),
+      body: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Center(
+            child: FadeTransition(
+              opacity: _animation,
+              child: Image.asset(
+                'assets/splash.png',
+                height: 300,
+                width: 350,
+              ),
+            ),
+          ),
+          SizedBox(height: 20), // Add space between the image and text
+          Text(
+            "Job Finder",
+            style: TextStyle(
+              fontSize: 24, // Set font size to 24
+              fontWeight: FontWeight.bold, // Set font weight to bold
+              fontFamily: 'Roboto', // Change font family as needed
+              color: Colors.blue, // Set text color to blue
+              // Add more text styles as needed
+            ),
+          ),
+        ],
       ),
     );
   }
