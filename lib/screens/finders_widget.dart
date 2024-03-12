@@ -14,30 +14,61 @@ class FinderPage extends StatefulWidget {
 class _FinderPageState extends State<FinderPage> with TickerProviderStateMixin {
   late ScrollController _scrollController;
 
-  void _showBottomSheet(BuildContext context) {
-    showModalBottomSheet(
-      context: context,
-      builder: (BuildContext context) {
-        return Container(
-          height: 200,
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: <Widget>[
-              ListTile(
-                leading: Icon(Icons.save),
-                title: Text('Saved Jobs'),
-                onTap: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(builder: (context) => SavedJobsScreen()),
-                  );
-                },
-              ),              
-            ],
+  List<Widget> _buildRecommendedJobs() {
+    List<Widget> recommendedJobs = [];
+    Random random = Random();
+    for (int i = 0; i < 5; i++) {
+      recommendedJobs.add(
+        Padding(
+          padding: EdgeInsets.symmetric(horizontal: 4.0),
+          child: Container(
+            width: 400,
+            decoration: BoxDecoration(
+              border: Border.all(color: Colors.grey),
+              borderRadius: BorderRadius.circular(10.0),
+            ),
+            child: InkWell(
+              onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => JobDetailsPage()),
+                );
+              },
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Padding(
+                    padding: EdgeInsets.all(8.0),
+                    child: Text(
+                      'Recommended Job ${random.nextInt(100)}',
+                      style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                  ),
+                  Padding(
+                    padding: EdgeInsets.symmetric(horizontal: 8.0),
+                    child: Text(
+                      'Description of the job',
+                    ),
+                  ),
+                  Padding(
+                    padding: EdgeInsets.all(8.0),
+                    child: Text(
+                      'Salary: \$${random.nextInt(10000)}',
+                      style: TextStyle(
+                        fontStyle: FontStyle.italic,
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ),
           ),
-        );
-      },
-    );
+        ),
+      );
+    }
+    return recommendedJobs;
   }
 
   @override
@@ -55,7 +86,9 @@ class _FinderPageState extends State<FinderPage> with TickerProviderStateMixin {
 
   void _scrollListener() {
     if (_scrollController.offset >= _scrollController.position.maxScrollExtent &&
-        !_scrollController.position.outOfRange) {      
+        !_scrollController.position.outOfRange) {
+      // Scrolled to the bottom
+      // Perform any animation or action when reaching the bottom of the list
     }
   }
 
@@ -107,61 +140,22 @@ class _FinderPageState extends State<FinderPage> with TickerProviderStateMixin {
                 ),
               ),
             ),
+            SizedBox(height: 8),
+            Text(
+              'Recommended Jobs',
+              style: TextStyle(
+                fontSize: 20,
+                fontWeight: FontWeight.bold,
+                color: Colors.blue,
+              ),
+            ),
+            SizedBox(height: 8),
             Divider(thickness: 1.0),
             SizedBox(
               height: 200, // Set the height of the container
-              child: ListView.builder(
+              child: ListView(
                 scrollDirection: Axis.horizontal,
-                itemCount: 10,
-                itemBuilder: (context, index) {
-                  return Padding(
-                    padding: EdgeInsets.symmetric(horizontal: 4.0),
-                    child: Container(
-                      width: 400,
-                      decoration: BoxDecoration(
-                        border: Border.all(color: Colors.grey),
-                        borderRadius: BorderRadius.circular(10.0),
-                      ),
-                      child: InkWell(
-                        onTap: () {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(builder: (context) => JobDetailsPage()),
-                          );
-                        },
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Padding(
-                              padding: EdgeInsets.all(8.0),
-                              child: Text(
-                                'Recommended Job $index',
-                                style: TextStyle(
-                                  fontWeight: FontWeight.bold,
-                                ),
-                              ),
-                            ),
-                            Padding(
-                              padding: EdgeInsets.symmetric(horizontal: 8.0),
-                              child: Text(
-                                'Description of the job',
-                              ),
-                            ),
-                            Padding(
-                              padding: EdgeInsets.all(8.0),
-                              child: Text(
-                                'Salary: \$${Random().nextInt(10000)}',
-                                style: TextStyle(
-                                  fontStyle: FontStyle.italic,
-                                ),
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                    ),
-                  );
-                },
+                children: _buildRecommendedJobs(),
               ),
             ),
             Divider(thickness: 1.0),
