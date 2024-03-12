@@ -56,9 +56,7 @@ class _JobFormState extends State<JobForm> {
             decoration: InputDecoration(labelText: 'Experience'),
           ),
           ElevatedButton(
-            onPressed: () {
-              // Implement posting job functionality
-            },
+            onPressed: () {},
             child: Text('Post Job'),
           ),
         ],

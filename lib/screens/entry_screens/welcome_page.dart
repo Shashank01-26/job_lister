@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:job_lister/Utils/buttons.dart';
-import 'package:job_lister/screens/finders_widget.dart';
-import 'package:job_lister/screens/recruiters_widget.dart';
+import 'package:job_lister/screens/finders_module/presentation/finders_widget.dart';
+import 'package:job_lister/screens/recruiter_screens/recruiters_widget.dart';
 
 class WelcomeScreen extends StatelessWidget {
   @override

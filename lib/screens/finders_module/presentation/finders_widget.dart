@@ -87,9 +87,7 @@ class _FinderPageState extends State<FinderPage> with TickerProviderStateMixin {
   void _scrollListener() {
     if (_scrollController.offset >= _scrollController.position.maxScrollExtent &&
         !_scrollController.position.outOfRange) {
-      // Scrolled to the bottom
-      // Perform any animation or action when reaching the bottom of the list
-    }
+     }
   }
 
   @override
@@ -152,7 +150,7 @@ class _FinderPageState extends State<FinderPage> with TickerProviderStateMixin {
             SizedBox(height: 8),
             Divider(thickness: 1.0),
             SizedBox(
-              height: 200, // Set the height of the container
+              height: 200, 
               child: ListView(
                 scrollDirection: Axis.horizontal,
                 children: _buildRecommendedJobs(),

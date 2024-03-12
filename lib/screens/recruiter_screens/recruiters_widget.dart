@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:job_lister/screens/job_form.dart';
+import 'package:job_lister/screens/recruiter_screens/job_form.dart';
 
 class RecruiterPage extends StatefulWidget {
   const RecruiterPage({Key? key}) : super(key: key);
@@ -25,7 +25,6 @@ class _RecruiterPageState extends State<RecruiterPage> {
                 return ListTile(
                   title: Text(application.jobRole),
                   subtitle: Text(application.companyName),
-                  // Display other details of the application
                 );
               },
             )
@@ -50,12 +49,10 @@ class _RecruiterPageState extends State<RecruiterPage> {
 class JobApplication {
   final String jobRole;
   final String companyName;
-  // Add other fields related to the job application
 
   JobApplication({
     required this.jobRole,
     required this.companyName,
-    // Add other fields related to the job application
   });
 }
 
