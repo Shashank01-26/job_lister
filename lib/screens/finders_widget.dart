@@ -9,7 +9,9 @@ class FinderPage extends StatefulWidget {
   State<FinderPage> createState() => _FinderPageState();
 }
 
-class _FinderPageState extends State<FinderPage> {
+class _FinderPageState extends State<FinderPage> with TickerProviderStateMixin {
+  late ScrollController _scrollController;
+
   void _showBottomSheet(BuildContext context) {
     showModalBottomSheet(
       context: context,
@@ -44,6 +46,27 @@ class _FinderPageState extends State<FinderPage> {
         );
       },
     );
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    _scrollController = ScrollController();
+    _scrollController.addListener(_scrollListener);
+  }
+
+  @override
+  void dispose() {
+    _scrollController.dispose();
+    super.dispose();
+  }
+
+  void _scrollListener() {
+    if (_scrollController.offset >= _scrollController.position.maxScrollExtent &&
+        !_scrollController.position.outOfRange) {
+      // Scrolled to the bottom
+      // Perform any animation or action when reaching the bottom of the list
+    }
   }
 
   @override
@@ -94,6 +117,16 @@ class _FinderPageState extends State<FinderPage> {
                 ),
               ),
             ),
+            Divider(thickness: 1.0),
+            Expanded(
+              child: ListView.builder(
+                controller: _scrollController,
+                itemCount: 10,
+                itemBuilder: (context, index) {
+                  return _buildListItem(index);
+                },
+              ),
+            ),
           ],
         ),
       ),
@@ -102,6 +135,23 @@ class _FinderPageState extends State<FinderPage> {
           _showBottomSheet(context);
         },
         child: Icon(Icons.menu),
+      ),
+    );
+  }
+
+  Widget _buildListItem(int index) {
+    return Card(
+      elevation: 5,
+      child: ListTile(
+        leading: Icon(Icons.image),
+        title: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text('Title $index'),
+            Text('Subtitle $index'),
+            Text('Description $index'),
+          ],
+        ),
       ),
     );
   }
