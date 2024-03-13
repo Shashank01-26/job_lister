@@ -10,7 +10,7 @@ class RemoteService {
 
     var headers = {
       'X-RapidAPI-Key': 'ed6fb77803mshd7e6ff7339a892fp16891djsn6a7248a88f8a',
-      'X-RapidAPI-Host': 'job-search-api1.p.rapidapi.com'
+
     };
 
     try {
