@@ -1,6 +1,7 @@
 import 'dart:math';
-
 import 'package:flutter/material.dart';
+import 'package:job_lister/network/network_service.dart';
+import 'package:job_lister/screens/finders_module/data/get_job_list_model.dart';
 import 'package:job_lister/screens/job_details/job_details_widget.dart';
 import 'package:job_lister/screens/saved_job_widget.dart';
 
@@ -12,6 +13,9 @@ class FinderPage extends StatefulWidget {
 }
 
 class _FinderPageState extends State<FinderPage> with TickerProviderStateMixin {
+  bool isLoaded = false;
+  late GetJobs getJobs = GetJobs(jobs: []); // Initialize with empty list
+
   late ScrollController _scrollController;
 
   List<Widget> _buildRecommendedJobs() {
@@ -20,7 +24,7 @@ class _FinderPageState extends State<FinderPage> with TickerProviderStateMixin {
     for (int i = 0; i < 5; i++) {
       recommendedJobs.add(
         Padding(
-          padding: EdgeInsets.symmetric(horizontal: 4.0),
+          padding: const EdgeInsets.symmetric(horizontal: 4.0),
           child: Container(
             width: 400,
             decoration: BoxDecoration(
@@ -31,32 +35,32 @@ class _FinderPageState extends State<FinderPage> with TickerProviderStateMixin {
               onTap: () {
                 Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => JobDetailsPage()),
+                  MaterialPageRoute(builder: (context) => const JobDetailsPage()),
                 );
               },
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Padding(
-                    padding: EdgeInsets.all(8.0),
+                    padding: const EdgeInsets.all(8.0),
                     child: Text(
                       'Recommended Job ${random.nextInt(100)}',
-                      style: TextStyle(
+                      style: const TextStyle(
                         fontWeight: FontWeight.bold,
                       ),
                     ),
                   ),
-                  Padding(
+                  const Padding(
                     padding: EdgeInsets.symmetric(horizontal: 8.0),
                     child: Text(
                       'Description of the job',
                     ),
                   ),
                   Padding(
-                    padding: EdgeInsets.all(8.0),
+                    padding: const EdgeInsets.all(8.0),
                     child: Text(
                       'Salary: \$${random.nextInt(10000)}',
-                      style: TextStyle(
+                      style: const TextStyle(
                         fontStyle: FontStyle.italic,
                       ),
                     ),
@@ -76,6 +80,7 @@ class _FinderPageState extends State<FinderPage> with TickerProviderStateMixin {
     super.initState();
     _scrollController = ScrollController();
     _scrollController.addListener(_scrollListener);
+    getData();
   }
 
   @override
@@ -85,24 +90,37 @@ class _FinderPageState extends State<FinderPage> with TickerProviderStateMixin {
   }
 
   void _scrollListener() {
-    if (_scrollController.offset >= _scrollController.position.maxScrollExtent &&
-        !_scrollController.position.outOfRange) {
-     }
+    if (_scrollController.offset >=
+            _scrollController.position.maxScrollExtent &&
+        !_scrollController.position.outOfRange) {}
+  }
+
+   void getData() async {
+    var jobs = await RemoteService().getJobs();
+    if (jobs != null) {
+      setState(() {
+        getJobs.jobs = jobs as List<Job>;
+      });
+    } else {
+      // Handle error
+      print('Failed to fetch jobs');
+    }
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: Padding(
-        padding: EdgeInsets.all(16.0),
+        padding: const EdgeInsets.all(16.0),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Row(
+            const Row(
               children: [
-                CircleAvatar(
-                  backgroundImage: AssetImage('assets/thumbnail.jpg'),
-                  radius: 24,
+                Icon(
+                  Icons.person_outline,
+                  size: 20,
+                  color: Colors.blue,
                 ),
                 SizedBox(width: 8),
                 Column(
@@ -128,18 +146,18 @@ class _FinderPageState extends State<FinderPage> with TickerProviderStateMixin {
                 ),
               ],
             ),
-            SizedBox(height: 16),
+            const SizedBox(height: 16),
             TextField(
               decoration: InputDecoration(
                 hintText: 'Search',
-                prefixIcon: Icon(Icons.search),
+                prefixIcon: const Icon(Icons.search),
                 border: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(30.0),
                 ),
               ),
             ),
-            SizedBox(height: 8),
-            Text(
+            const SizedBox(height: 8),
+            const Text(
               'Recommended Jobs',
               style: TextStyle(
                 fontSize: 20,
@@ -147,31 +165,33 @@ class _FinderPageState extends State<FinderPage> with TickerProviderStateMixin {
                 color: Colors.blue,
               ),
             ),
-            SizedBox(height: 8),
-            Divider(thickness: 1.0),
+            const SizedBox(height: 8),
+            const Divider(thickness: 1.0),
             SizedBox(
-              height: 200, 
+              height: 200,
               child: ListView(
                 scrollDirection: Axis.horizontal,
                 children: _buildRecommendedJobs(),
               ),
             ),
-            Divider(thickness: 1.0),
+            const Divider(thickness: 1.0),
             Expanded(
               child: ListView.builder(
                 controller: _scrollController,
-                itemCount: 10,
+                itemCount: getJobs.jobs.length,
                 itemBuilder: (context, index) {
+                  var job = getJobs.jobs[index];
                   return Padding(
-                    padding: EdgeInsets.only(top: 8.0),
+                    padding: const EdgeInsets.only(top: 8.0),
                     child: InkWell(
                       onTap: () {
                         Navigator.push(
                           context,
-                          MaterialPageRoute(builder: (context) => JobDetailsPage()),
+                          MaterialPageRoute(
+                              builder: (context) => const JobDetailsPage()),
                         );
                       },
-                      child: _buildListItem(index),
+                      child: _buildListItem(job),
                     ),
                   );
                 },
@@ -183,17 +203,17 @@ class _FinderPageState extends State<FinderPage> with TickerProviderStateMixin {
     );
   }
 
-  Widget _buildListItem(int index) {
+  Widget _buildListItem(Job job) {
     return Card(
       elevation: 3,
       child: ListTile(
-        leading: Icon(Icons.image),
+        leading: const Icon(Icons.image),
         title: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text('Title $index'),
-            Text('Subtitle $index'),
-            Text('Description $index'),
+            Text(job.title),
+            Text(job.location.toString()),
+            Text(job.plainTextDescription),
           ],
         ),
       ),
